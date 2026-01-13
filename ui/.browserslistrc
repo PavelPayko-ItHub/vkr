@@ -1,0 +1,7 @@
+[production]
+defaults and fully supports es6-module
+
+[development]
+last 2 Chrome versions
+last 2 Firefox versions
+last 1 Safari version

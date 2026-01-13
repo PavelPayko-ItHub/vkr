@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "ESNext",
+    "target": "es5",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src/",
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "lib": [
+      "es2021",
+      "dom"
+    ],
+    "paths": {
+      "app/*": [
+        "app/*"
+      ],
+      "pages/*": [
+        "pages/*"
+      ],
+      "modules/*": [
+        "modules/*"
+      ],
+      "components/*": [
+        "components/*"
+      ],
+      "ui/*": [
+        "ui/*"
+      ],
+      "core/*": [
+        "core/*"
+      ]
+    }
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": [
+    "src",
+    ".eslintrc.js",
+    "webpack.config.ts",
+    "global.d.ts",
+    "config"
+  ],
+}

@@ -1,0 +1,11 @@
+@import "reset";
+@import "variables";
+
+.Content {
+  margin-left: var(--width-navbar);
+  width: calc(100% - var(--width-navbar));
+}
+
+.app {
+  height: 100%;
+}

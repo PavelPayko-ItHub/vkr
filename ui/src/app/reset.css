@@ -1,0 +1,51 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+html, body, #root, .ant-app {
+    height: 100%;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:focus,
+:active {
+    outline: none;
+}
+
+input,
+button,
+textarea,
+select {
+    margin: 0;
+    font: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+img {
+    vertical-align: top;
+}
+
+ul li {
+    list-style: none;
+}
+
+[data-hidden] {
+    position: fixed;
+    transform: scale(0);
+}
