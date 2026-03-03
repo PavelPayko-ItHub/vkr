@@ -1,0 +1,13 @@
+.item {
+  cursor: pointer;
+
+  &:hover {
+    .btn {
+      visibility: visible;
+    }
+  }
+}
+
+.btn {
+  visibility: hidden;
+}

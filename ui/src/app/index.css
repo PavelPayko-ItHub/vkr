@@ -1,6 +1,11 @@
 @import "reset";
 @import "variables";
 
+@font-face {
+  font-family: 'Inter';
+  src: url(../fonts/Inter.ttf);
+}
+
 .Content {
   margin-left: var(--width-navbar);
   width: calc(100% - var(--width-navbar));
@@ -8,4 +13,5 @@
 
 .app {
   height: 100%;
+  font-family: Roboto;
 }

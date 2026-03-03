@@ -24,7 +24,7 @@ export interface IResultWithoutData {
     errors?: Record<string, string[]>
 }
 
-export interface IResult<T = any> extends IResultWithoutData {
+export interface IResult<T = unknown> extends IResultWithoutData {
     data: T
 }
 

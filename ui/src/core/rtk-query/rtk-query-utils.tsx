@@ -1,9 +1,9 @@
-import { type FetchBaseQueryArgs } from '@reduxjs/toolkit/dist/query/fetchBaseQuery'
 import { type BaseQueryApi, type FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import { type AllTagsTypes } from './rtk-query-api'
 import { API_URL } from './rtk-query-constants'
 import type { IExtraOptions } from './rtk-query-types'
+import type { FetchBaseQueryArgs } from '@reduxjs/toolkit/query'
 
 export const baseQuery = async (
     args: FetchArgs,
@@ -45,7 +45,7 @@ export const serializeUriParams: FetchBaseQueryArgs['paramsSerializer'] = (param
             })
             // {filters: field: value} --> filters[field]
         } else if (typeof value === 'object' && value !== null) {
-            Object.entries(value as Record<string, any>).forEach(([subKey, subValue]) => {
+            Object.entries(value as Record<string, unknown>).forEach(([subKey, subValue]) => {
                 // {filters: field: value[]} --> filters[field][0], filters[field][1]
                 if (Array.isArray(subValue)) {
                     subValue.forEach((val, idx) => {

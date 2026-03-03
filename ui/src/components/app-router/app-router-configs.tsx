@@ -1,30 +1,38 @@
+import { Auth } from '../auth'
+import { Registration } from '../registration'
+import { Main } from '../main'
+import { NotFound } from '../not-found'
+import { RequestCreate } from '../request-create'
 
-import { AuthPage } from 'pages/auth-page'
-import { MainPage } from 'pages/main-page'
-import { NotFoundPage } from 'pages/not-found-page'
-
-import { type RouteConfig } from './app-router-types'
-import { AppRoutes, RoutePath } from './routes'
-
-export const routes: RouteConfig[] = [
+export const routes = [
     {
-        name: AppRoutes.AUTH,
-        path: RoutePath.auth,
-        element: <AuthPage/>
+        name: 'auth',
+        path: '/auth',
+        element: <Auth/>
+    },
+        {
+        name: 'registration',
+        path: '/registration',
+        element: <Registration/>
+    },
+     {
+        name: 'request',
+        path: '/request',
+        element: <RequestCreate/>
     },
     {
-        name: AppRoutes.MAIN,
-        path: RoutePath.main,
-        element: <MainPage/>
+        name: 'main',
+        path: '/',
+        element: <Main/>
     },
     {
-        name: AppRoutes.NOT_FOUND,
-        path: RoutePath['not-found'],
-        element: <NotFoundPage/>
+        name: 'not-found',
+        path: '*',
+        element: <NotFound/>
     },
     {
-        name: AppRoutes.NOT_FOUND,
-        path: RoutePath.forbidden,
+        name: 'forbidden',
+        path: '/forbidden',
         element: <div>Доступ запрещён</div>
     }
 ]

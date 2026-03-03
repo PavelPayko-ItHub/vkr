@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instanceAxios = axios.create({
-    baseURL: __REACT_APP_API_ADDRESS__,
+    baseURL: 'http://localhost:3000/',
     headers: { 'Content-Type': 'application/json' }
 })
 
@@ -14,5 +14,13 @@ instanceAxios.interceptors.request.use(
         return config
     }
 )
+
+instanceAxios.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err?.response?.status === 401) localStorage.removeItem('token');
+    return Promise.reject(err);
+  }
+);
 
 export { instanceAxios }

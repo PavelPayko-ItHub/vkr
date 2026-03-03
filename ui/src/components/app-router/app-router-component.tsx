@@ -5,32 +5,28 @@ import {
     useCallback
 } from 'react'
 
-import { Route, Routes } from 'react-router-dom'
-
-import { RequireAuth } from 'components/require-auth'
-
+import { Route, Routes } from 'react-router'
 import { routes } from './app-router-configs'
-import { type RouteConfig } from './app-router-types'
+import { Layout } from '../layout'
+import type { IRoute } from './app-router-types'
 
 export const AppRouterComponent: FC = () => {
-    const renderRoutes: (route: RouteConfig) => ReactNode = useCallback(({
+    const renderRoutes: (route: IRoute) => ReactNode = useCallback(({
         path,
-        element,
-        authOnly,
-        roles
+        element
     }) => {
-        const wrapElement = <Suspense fallback={<div>Loading...</div>}>
-            {element}
-        </Suspense>
-
         return (
             <Route
                 key={path}
                 path={path}
-                element={authOnly ? <RequireAuth roles={roles}>{wrapElement}</RequireAuth> : wrapElement}
+                element={<Suspense fallback={<div>Loading...</div>}>{element}</Suspense>}
             />
         )
     }, [])
 
-    return <Routes>{routes.map(renderRoutes)}</Routes>
+    return <Routes>
+        <Route path={'/'} element={<Layout/>}>
+      {routes.map(renderRoutes)}
+      </Route>
+      </Routes>
 }

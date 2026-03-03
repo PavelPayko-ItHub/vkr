@@ -1,9 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import { rtkQueryApi } from 'core/rtk-query/rtk-query-api'
-
 import { type IRootState } from './store-types'
 import { userReducer } from '../user/user-slice'
+import { rtkQueryApi } from '../rtk-query/rtk-query-api'
 
 export const createReduxStore = (initialState?: IRootState) => {
     const rootReducer = combineReducers({
@@ -14,7 +13,7 @@ export const createReduxStore = (initialState?: IRootState) => {
     return configureStore({
         reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(rtkQueryApi.middleware),
-        devTools: __IS_DEV__,
+        devTools: true,
         preloadedState: initialState
     })
 }
