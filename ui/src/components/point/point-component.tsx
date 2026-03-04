@@ -39,7 +39,7 @@ export const Point: FC<IPointProps> = ({
     const queryClient = useQueryClient()
     const pointMutation = useMutation({
         mutationFn: async (pointData: IPointUpdate) => {
-            const response = await instanceAxios.patch(`/api/points/${data.id}`, pointData)
+            const response = await instanceAxios.put(`/api/points/${data.id}`, pointData)
             return response
         },
         onSuccess: () => {
@@ -94,12 +94,14 @@ export const Point: FC<IPointProps> = ({
             open={isOpen}
             onCancel={closeHandler}
             okButtonProps={{ htmlType: 'submit', form: 'edit-point', loading: pointMutation.isPending }}
+            destroyOnHidden
         >
             <Form<IPointUpdate>
                 name='edit-point'
                 onFinish={submitHandler}
                 layout='vertical'
                 initialValues={data}
+                clearOnDestroy
             >
                 <Form.Item
                     name={'type'}

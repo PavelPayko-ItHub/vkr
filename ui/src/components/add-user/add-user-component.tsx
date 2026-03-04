@@ -47,7 +47,8 @@ export const AddUserComponent: FC<IMainProps> = () => {
 
 
     return <>
-        <Button onClick={openHandler}>Добавить</Button>
+        <Button onClick={openHandler}>Добавить пользователя</Button>
+
         <Modal
             title={'Добавить пользователя'}
             open={isOpen}
@@ -61,7 +62,7 @@ export const AddUserComponent: FC<IMainProps> = () => {
             >
                 <Form.Item
                     name={'login'}
-                    label={'login'}
+                    label={'Логин'}
                     required
                     rules={[
                         { required: true, message: 'Введите логин' },
@@ -73,35 +74,35 @@ export const AddUserComponent: FC<IMainProps> = () => {
                 </Form.Item>
                 <Form.Item
                     name={'password'}
-                    label={'password'}
+                    label={'Пароль'}
                     rules={[
                         { required: true, message: 'Введите пароль' },
                         { min: 8, message: 'Не менее 8 символов' }
                     ]}
                     required
                 >
-                    <Input />
+                    <Input.Password />
                 </Form.Item>
                 <Form.Item
                     name={'full_name'}
-                    label={'full_name'}
+                    label={'Имя'}
                     rules={[{ required: true, message: 'Введите полное имя' }]}
                 >
                     <Input />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     name={'phone'}
-                    label={'phone'}
+                    label={'Телефон'}
                     rules={[
                         { required: true, message: 'Введите телефон' },
                         { pattern: /^8\(\d{3}\)\d{3}-\d{2}-\d{2}$/, message: 'Введите телефон в формате 8(XXX)XXX-XX-XX' },
                     ]}
                 >
                     <Input />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                     name={'email'}
-                    label={'email'}
+                    label={'Почта'}
                     rules={[
                         { required: true, message: 'Введите почту' },
                         { pattern: /^\S+@\S+\.\S+$/, message: 'Некорректный email' }

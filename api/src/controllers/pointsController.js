@@ -19,7 +19,8 @@ exports.getPoints = async (req, res) => {
 // created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
 // updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 exports.createPoint = async (req, res) => {
-  const { id: user_id } = req.user
+  const { id } = req.user
+  const user_id = req.body.user_id || id
   const description = req.body.description
   const type = req.body.type || ''
   const deadline = req.body.deadline || ''
@@ -46,10 +47,11 @@ exports.getPoints = async (req, res) => {
   try {
     if (role === 'admin') {
       const result = await pool.query(`
-        SELECT points.id, points.user_id, u.login, points.type, points.description, points.status,
+        SELECT points.id, points.user_id, u.login, u.full_name, points.type, points.description, points.status,
                 points.created_at::text
         FROM points
         JOIN users u ON u.id = points.user_id
+        WHERE u.login != 'admin'
         ORDER BY points.created_at DESC`
       )
       res.status(200).json(result.rows)
@@ -69,7 +71,6 @@ exports.getPoints = async (req, res) => {
 
 exports.getUserPoints = async (req, res) => {
   const { userId: user_id } = req.params
-
   console.log('getUserPoints', { user_id })
 
   try {
@@ -82,6 +83,31 @@ exports.getUserPoints = async (req, res) => {
     res.status(200).json(result.rows)
 
   } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+exports.updatePoint = async (req, res) => {
+  const { pointId } = req.params
+  const description = req.body.description
+  const type = req.body.type || ''
+  const deadline = req.body.deadline || ''
+  const status = req.body.status || ''
+
+  console.log('updatePoint', { pointId, body: req.body })
+
+
+  try {
+    const result = await pool.query(`
+        UPDATE points 
+        SET description=$2, type=$3, deadline=$4, status=$5
+        WHERE id=$1
+      `,
+      [pointId, description, type, deadline, status])
+    res.status(201).json(result.rows[0])
+
+  }
+  catch (err) {
     res.status(500).json({ error: err.message })
   }
 }
@@ -178,5 +204,4 @@ exports.updateStatus = async (req, res) => {
   catch (err) {
     res.status(500).json({ error: err.message })
   }
-
 }

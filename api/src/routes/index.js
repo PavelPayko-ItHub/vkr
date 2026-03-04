@@ -20,6 +20,7 @@ router.get('/users/:userId/points', verifyUserToken, pointsController.getUserPoi
 
 router.get('/points', verifyUserToken, pointsController.getPoints)
 router.post('/points', verifyUserToken, pointsController.createPoint)
+router.put('/points/:pointId', verifyUserToken, pointsController.updatePoint)
 
 router.post('/points/:pointId/feedback', verifyUserToken, pointsController.createFeedback)
 router.get('/points/:pointId/feedback', verifyUserToken, pointsController.getFeedback)

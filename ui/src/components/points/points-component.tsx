@@ -89,7 +89,7 @@ export const PointsComponent: FC<IPointsProps> = ({
         if (type === 'point') {
             switch (status) {
                 case 'new':
-                    return <ClockCircleOutlined />;
+                    return;
                 case 'in_progress':
                     return <ClockCircleOutlined />
                 case 'completed':
@@ -113,12 +113,12 @@ export const PointsComponent: FC<IPointsProps> = ({
     const { isPending, error, data, isFetching, isLoading } = useQuery({
         queryKey: ['userPoints', userId],
         queryFn: async () => {
-            const response = await instanceAxios.get(`/api/points/${userId}`)
+            const response = await instanceAxios.get(`/api/users/${userId}/points`)
             // const response = await instanceAxios.get(`/api/points`)
             return response
         },
         select: (data: IPoint[]) => data?.data?.map((point) => ({
-            title: new Date(point.deadline).toLocaleString(),
+            title: new Date(point.deadline).toLocaleDateString(),
             content: <Point data={point} />,
             icon: getIcon(point.type, point.status)
         })) || [],

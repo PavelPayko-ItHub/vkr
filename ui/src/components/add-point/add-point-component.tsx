@@ -40,7 +40,7 @@ export const AddPointComponent: FC<IAddPointProps> = ({
     const submitHandler = (values: IPointCreate) => {
         console.log({ values });
 
-        pointMutation.mutate(values)
+        pointMutation.mutate({ ...values, user_id: userId })
     }
 
     const openHandler = () => {

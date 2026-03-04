@@ -11,5 +11,5 @@ export interface IPoint {
   created_at: string
 }
 
-export type IPointUpdate = Omit<IPoint, 'id' | 'user_id' | 'created_at'>
+export type IPointUpdate = Omit<IPoint, 'id' | 'created_at'>
 export type IPointCreate = Omit<IPointUpdate, 'status'>
