@@ -24,7 +24,7 @@ export const App: FC = () => {
                     // fontSizeHeading2: 24,                
                     // fontSizeHeading3: 18,                
                     // fontSizeSM: 12,
-                    fontFamily: 'Inter'    
+                    fontFamily: 'Inter'
                 }
             }}
         >
@@ -32,7 +32,7 @@ export const App: FC = () => {
                 <div className={'app'}>
                     <AppRouter />
                 </div>
-            </QueryClientProvider>,
+            </QueryClientProvider>
         </ConfigProvider>
     )
 }

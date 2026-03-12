@@ -2,37 +2,39 @@ import { Auth } from '../auth'
 import { Registration } from '../registration'
 import { Main } from '../main'
 import { NotFound } from '../not-found'
-import { RequestCreate } from '../request-create'
+import { AdminPanel } from 'components/admin-panel'
+import { Forbidden } from 'components/forbidden'
 
 export const routes = [
     {
+        name: 'admin',
+        path: '/admin',
+        protect: true,
+        element: <AdminPanel />
+    },
+    {
         name: 'auth',
         path: '/auth',
-        element: <Auth/>
+        element: <Auth />
     },
-        {
+    {
         name: 'registration',
         path: '/registration',
-        element: <Registration/>
-    },
-     {
-        name: 'request',
-        path: '/request',
-        element: <RequestCreate/>
+        element: <Registration />
     },
     {
         name: 'main',
         path: '/',
-        element: <Main/>
+        element: <Main />
     },
     {
         name: 'not-found',
         path: '*',
-        element: <NotFound/>
+        element: <NotFound />
     },
     {
         name: 'forbidden',
         path: '/forbidden',
-        element: <div>Доступ запрещён</div>
+        element: <Forbidden />
     }
 ]

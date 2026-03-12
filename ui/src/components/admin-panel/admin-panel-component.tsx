@@ -1,70 +1,79 @@
-import { useCallback, useEffect, useState, type FC } from 'react'
+import { type FC } from 'react'
 
 import { type IMainProps } from './admin-panel-types'
-import { instanceAxios } from '../../core/api/axios'
-import { Button, Card, Divider, Dropdown, Flex, message, Typography, type MenuProps } from 'antd'
-import { RequestCard } from '../request-card'
-import type { IRequest } from '../../core/types/points'
+import { Flex, Table, type TableProps } from 'antd'
+import { fetchUsers } from 'core/api/users-api'
+import { useQuery } from '@tanstack/react-query'
+import type { IUser } from 'core/types/user'
+import { UpdateUser } from 'components/update-user'
+import { DeleteUser } from 'components/delete-user'
 
 export const AdminPanelComponent: FC<IMainProps> = () => {
+    const { data: users, isPending, isFetching, isLoading, isRefetching } = useQuery({
+        queryKey: ['users'],
+        queryFn: fetchUsers,
+        select: data => data || []
+    })
 
-    const [data, setData] = useState<IRequest[]>([])
+    const columns: TableProps<IUser>['columns'] = [
+        {
+            title: 'Имя',
+            dataIndex: 'full_name',
+            key: 'full_name',
+            render: value => value || '-',
+            sorter: (a, b) => {
+                if (a.full_name > b.full_name) return 1
+                if (a.full_name < b.full_name) return -1
+                return 0
+            }
+        },
+        {
+            title: 'Логин',
+            dataIndex: 'login',
+            key: 'login',
+            render: value => value || '-',
+            sorter: (a, b) => {
+                if (a.login > b.login) return 1
+                if (a.login < b.login) return -1
+                return 0
+            }
+        },
+        {
+            title: 'Зарегистрирован',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            render: value => value ? new Date(value).toLocaleString() : '-',
+            sorter: (a, b) => new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()
+        },
+        {
+            title: 'Почта',
+            dataIndex: 'email',
+            key: 'address',
+            render: value => value || '-',
+        },
+        {
+            title: 'Телефон',
+            dataIndex: 'phone',
+            key: 'address',
+            render: value => value || '-',
+        },
+        {
+            title: 'Роль',
+            dataIndex: 'role',
+            key: 'address',
+            render: value => value || '-',
+        },
+        {
+            title: 'Действие',
+            key: 'action',
+            render: (_, record) => (
+                <Flex>
+                    <UpdateUser data={record} />
+                    <DeleteUser id={record.id} />
+                </Flex>
+            ),
+        },
+    ];
 
-    const getRequests = useCallback(() => {
-        return instanceAxios.get('/api/requests')
-            .then((res) => {
-                setData(res.data)
-            })
-            .catch((err) => {
-                console.log({ err });
-            })
-    }, [])
-
-    useEffect(() => {
-        getRequests()
-
-    }, [getRequests])
-
-    const updateStatusHandler = (id: string, status: IRequest['status']) => {
-        instanceAxios
-            .put(`/api/requests/${id}/status`, { status })
-            .then(() => {
-                message.success('Статус успешно обновлен')
-                getRequests()
-            })
-            .catch((err) => {
-                message.success('Статус не обновлен, повторите позже')
-                console.error({ err });
-            })
-    }
-    const getStatusItems = (id: string): MenuProps['items'] => ([
-        { key: `${id}-assigned`, label: 'Мероприятие назначено', onClick: () => { updateStatusHandler(id, 'assigned') } },
-        { key: `${id}-completed`, label: 'Мероприятие завершено', onClick: () => { updateStatusHandler(id, 'completed') } }
-    ])
-
-    return <Flex vertical>
-        <Flex justify='space-between'>
-            <Typography.Title>Все заявки (Админ)</Typography.Title>
-            <Button onClick={getRequests}>Обновить</Button>
-        </Flex>
-
-        {data.length
-            ? data.map(item => (
-                <Card key={item.id}>
-                    <Flex vertical>
-                        <RequestCard data={item} />
-
-                        <Divider />
-
-                        <Dropdown menu={{ items: getStatusItems(item.id) }} trigger={['click']}>
-                            <Button style={{ width: 'max-content' }}>
-                                Обновить статус
-                            </Button>
-                        </Dropdown>
-                    </Flex>
-                </Card>
-            ))
-            : 'В системе еще нет заявок'
-        }
-    </Flex>
+    return <Table columns={columns} dataSource={users} loading={isFetching || isLoading || isPending || isRefetching} />
 }

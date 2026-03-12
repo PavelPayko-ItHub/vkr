@@ -14,21 +14,6 @@ async function readSqlFile(filePath) {
 
 // Функция для последовательного выполнения SQL-запросов
 async function executeScript(pool, scriptContent) {
-  // let queries = scriptContent.split(/;\s*$/m)
-  // console.log();
-
-  // for (let i = 0; i < queries.length; i++) {
-  //   if (!queries[i].trim()) continue
-
-  //   try {
-  //     await pool.query(queries[i])
-  //     console.log(`Выполнено: ${i + 1}/${queries.length}`)
-  //   } catch (err) {
-  //     console.error(`Ошибка при выполнении запроса №${i + 1}`, err.stack || err.message)
-  //     break
-  //   }
-  // }
-
   try {
     await pool.query(scriptContent)
     console.log(`инициализация БД выполнена успешно`)

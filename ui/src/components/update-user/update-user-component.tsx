@@ -5,33 +5,36 @@ import {
     Form,
     Input,
     Modal,
-    Typography
+    Select,
+    Typography,
+    type SelectProps
 } from 'antd'
 
-import { type IMainProps } from './add-user-types'
+import { type IUpdateUserProps } from './update-user-types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { instanceAxios } from 'core/api/axios'
-import type { IUserCreate } from 'core/types/user'
+import type { IUserUpdate } from 'core/types/user'
 import type { AxiosError } from 'axios'
 
 
-export const AddUserComponent: FC<IMainProps> = () => {
+export const UpdateUserComponent: FC<IUpdateUserProps> = ({
+    data
+}) => {
     const queryClient = useQueryClient()
     const [isOpen, setIsOpen] = useState(false)
 
     const userMutation = useMutation({
-        mutationFn: async (user: IUserCreate) => {
-            const response = await instanceAxios.post('/api/users', user)
+        mutationFn: async (userData: IUserUpdate) => {
+            const response = await instanceAxios.put(`/api/users/${data.id}`, userData)
             return response
         },
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['users'] })
             closeHandler()
         },
     })
 
-    const submitHandler = (values: IUserCreate) => {
+    const submitHandler = (values: IUserUpdate) => {
         userMutation.mutate(values)
     }
 
@@ -43,43 +46,28 @@ export const AddUserComponent: FC<IMainProps> = () => {
         setIsOpen(false)
     }
 
+    const roleOptions: SelectProps['options'] = [
+        { value: 'admin,', label: 'Администратор' },
+        { value: 'user', label: 'Сотрудник' },
+    ]
+
+
     return <>
-        <Button onClick={openHandler}>Добавить пользователя</Button>
+        <Button onClick={openHandler} type='link'>Изменить</Button>
 
         <Modal
-            title={'Добавить пользователя'}
+            title={'Изменить пользователя'}
             open={isOpen}
             onCancel={closeHandler}
-            okButtonProps={{ htmlType: 'submit', form: 'create-user', loading: userMutation.isPending }}
+            okButtonProps={{ htmlType: 'submit', form: 'update-user', loading: userMutation.isPending }}
+            destroyOnHidden
         >
-            <Form<IUserCreate>
-                name='create-user'
+            <Form<IUserUpdate>
+                name='update-user'
                 onFinish={submitHandler}
                 layout='vertical'
+                initialValues={data}
             >
-                <Form.Item
-                    name={'login'}
-                    label={'Логин'}
-                    required
-                    rules={[
-                        { required: true, message: 'Введите логин' },
-                        { pattern: /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+$/, message: 'Не менее одной буквы и одной цифры' },
-                        { min: 6, message: 'Не менее 6 символов' }
-                    ]}
-                >
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name={'password'}
-                    label={'Пароль'}
-                    rules={[
-                        { required: true, message: 'Введите пароль' },
-                        { min: 8, message: 'Не менее 8 символов' }
-                    ]}
-                    required
-                >
-                    <Input.Password />
-                </Form.Item>
                 <Form.Item
                     name={'full_name'}
                     label={'Имя'}
@@ -107,6 +95,13 @@ export const AddUserComponent: FC<IMainProps> = () => {
                     <Input />
                 </Form.Item>
 
+                <Form.Item
+                    name={'role'}
+                    label={'Роль'}
+                >
+                    <Select options={roleOptions} />
+                </Form.Item>
+
                 {userMutation.isError &&
                     <Typography.Text type='danger'>{(userMutation?.error as AxiosError<{ error: string }>)?.response?.data?.error}</Typography.Text>
                 }
@@ -114,10 +109,3 @@ export const AddUserComponent: FC<IMainProps> = () => {
         </Modal>
     </>
 }
-
-// 1 - выполненый поинт -<CheckCircleOutlined />
-// 2- запланированный поинт
-// 3 - в процессе - <ClockCircleOutlined />
-
-// 4 - полученное достижение - <RiseOutlined />
-// 5- планируемое достижение

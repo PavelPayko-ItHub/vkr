@@ -1,9 +1,7 @@
 import { useState, type FC } from 'react'
 
 import {
-    DownOutlined,
     MoreOutlined,
-    UpOutlined
 } from '@ant-design/icons'
 import {
     Button,
@@ -30,10 +28,6 @@ import dayjs from 'dayjs'
 export const Point: FC<IPointProps> = ({
     data
 }) => {
-
-    console.log({ point: data });
-
-
     const [isOpen, setIsOpen] = useState(false)
 
     const queryClient = useQueryClient()
@@ -43,7 +37,6 @@ export const Point: FC<IPointProps> = ({
             return response
         },
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['userPoints', data.user_id] })
             closeHandler()
         },
@@ -61,9 +54,6 @@ export const Point: FC<IPointProps> = ({
         setIsOpen(false)
     }
 
-    console.log({ pointMutation });
-
-    // 'new', 'in_progress', 'completed', 'new_achievement', 'completed_achievement'
     const statusOptions: SelectProps['options'] = [
         { value: 'new', label: 'Новый' },
         { value: 'in_progress', label: 'Выполняется' },
@@ -74,7 +64,6 @@ export const Point: FC<IPointProps> = ({
         { value: 'point', label: 'Цель' },
         { value: 'achievement', label: 'Достижение' },
     ]
-
 
     return <>
         <Flex className={styles.item} gap={8}>
@@ -117,10 +106,6 @@ export const Point: FC<IPointProps> = ({
                 <Form.Item
                     name={'deadline'}
                     label={'Время выполнения'}
-                    rules={[
-                        // { required: true, message: 'Введите пароль' },
-                        // { min: 8, message: 'Не менее 8 символов' }
-                    ]}
                     required
                     getValueProps={(value) => ({ value: value ? dayjs(value) : "", })}
                 >

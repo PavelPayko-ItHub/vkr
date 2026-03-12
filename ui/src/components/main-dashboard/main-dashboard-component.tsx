@@ -10,16 +10,30 @@ import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import ReactEChartsCore from 'echarts-for-react/lib/core'
 import type { EChartsOption } from 'echarts-for-react/src/types'
-import type { IPoint } from 'core/types/points'
+import type { IUserPoint } from 'core/types/points'
 import type { FC } from 'react'
 import type { IMainDashboardProps } from './main-dashboard-types'
-import { Flex } from 'antd'
 import { useQuery } from '@tanstack/react-query'
-import { instanceAxios } from 'core/api/axios'
+import { fetchPoints } from 'core/api/points-api'
 
-export const MainDashboardComponent: FC<IMainDashboardProps> = ({
-    points
-}) => {
+export const MainDashboardComponent: FC<IMainDashboardProps> = () => {
+
+    const { data: points } = useQuery({
+        queryKey: ['userPoints'],
+        queryFn: fetchPoints,
+        select: (data: IUserPoint[]) => data?.reduce((acc, point) => {
+            const key = point.full_name
+
+            if (acc[key]) {
+                acc[key] = acc[key] + 1
+                return acc
+            }
+
+            acc[key] = 1
+
+            return acc
+        }, {} as Record<string, number>) || {}
+    })
 
     echarts.use([
         BarChart,
@@ -27,12 +41,9 @@ export const MainDashboardComponent: FC<IMainDashboardProps> = ({
         PieChart,
         LegendComponent,
         TooltipComponent,
-        // DatasetComponent,
         GridComponent,
         MarkLineComponent,
-        // SVGRenderer,
         CanvasRenderer,
-        // VisualMapComponent,
         DataZoomComponent,
         ToolboxComponent
     ])
@@ -42,7 +53,6 @@ export const MainDashboardComponent: FC<IMainDashboardProps> = ({
     const option: EChartsOption = {
         xAxis: {
             type: 'category',
-            // data: ['User', 'User2', 'User3', 'User4', 'User 5']
             data: Object.keys(points || {})
         },
         tooltip: {
@@ -53,7 +63,6 @@ export const MainDashboardComponent: FC<IMainDashboardProps> = ({
         },
         series: [
             {
-                // data: [2, 3, 1, 3, 2],
                 data: Object.values(points || {}),
                 type: 'bar'
             }
@@ -72,10 +81,3 @@ export const MainDashboardComponent: FC<IMainDashboardProps> = ({
         />
     </div>
 }
-
-// 1 - выполненый поинт -<CheckCircleOutlined />
-// 2- запланированный поинт
-// 3 - в процессе - <ClockCircleOutlined />
-
-// 4 - полученное достижение - <RiseOutlined />
-// 5- планируемое достижение

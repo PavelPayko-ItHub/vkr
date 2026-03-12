@@ -7,7 +7,7 @@ import { instanceAxios } from '../../core/api/axios'
 import type { IUser, IUserCreate } from '../../core/types/user'
 import type { AxiosError, AxiosResponse } from 'axios'
 
-// import styles from './auth.module.css'
+import styles from './auth.module.css'
 
 export const AuthComponent: FC = () => {
     const navigate = useNavigate();
@@ -21,12 +21,12 @@ export const AuthComponent: FC = () => {
                 navigate('/')
             })
             .catch((err: AxiosError<{ error: string }>) => {
-                console.log({ err });
+                console.error({ err });
                 message.error(err?.response?.data?.error)
             })
     }
 
-    return <Flex justify='center' align='center'>
+    return <Flex justify='center' align='center' className={styles.container}>
         <Card style={{ width: 600 }}>
             <Form<IUserCreate>
                 onFinish={submitHandler}
@@ -55,7 +55,7 @@ export const AuthComponent: FC = () => {
 
                 <Flex vertical gap={8}>
                     <Button htmlType='submit' type='primary' style={{ width: 'max-content' }}>Войти</Button>
-                    <Flex>
+                    <Flex gap={8}>
                         <Typography.Text>Еще не зарегистрированы? </Typography.Text>
                         <NavLink to={'/registration'}>Регистрация</NavLink>
                     </Flex>

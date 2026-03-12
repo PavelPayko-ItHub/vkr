@@ -4,7 +4,6 @@ import {
     Button,
     Dropdown,
     Flex,
-    Image,
     Layout,
     theme,
     Typography,
@@ -12,17 +11,27 @@ import {
 } from 'antd'
 
 import { type IMainProps } from './header-types'
-import { NavLink, Outlet, useNavigate } from 'react-router'
+import { NavLink, useLocation, useNavigate } from 'react-router'
 
-import styles from './header.module.css'
 import { RiseOutlined, UserOutlined } from '@ant-design/icons'
 
 export const HeaderComponent: FC<IMainProps> = () => {
     const {
-        token: { colorBgContainer, borderRadiusLG },
+        token: { colorBgContainer },
     } = theme.useToken();
 
+    const isAdmin = JSON.parse(localStorage.getItem('user') || '{}')?.role === 'admin'
+
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const titleByPath: Record<string, string> = {
+        '/': isAdmin ? 'Мои сотрудники' : 'Мой ИПР',
+        '/admin': 'Панель администратора'
+    }
+
+    const getTitle = () => titleByPath[location.pathname] || ''
+
 
     const userData = JSON.parse(localStorage.getItem('user') || '{}')
 
@@ -48,6 +57,9 @@ export const HeaderComponent: FC<IMainProps> = () => {
                 <Typography.Text>Grow App</Typography.Text>
             </Flex>
         </NavLink>
+
+        <Typography.Title level={4} style={{ margin: 0 }}>{getTitle()}</Typography.Title>
+
         {
             userData.full_name
                 ? <Dropdown menu={{ items }}>

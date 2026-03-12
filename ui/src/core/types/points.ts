@@ -11,5 +11,10 @@ export interface IPoint {
   created_at: string
 }
 
+export interface IUserPoint extends IPoint {
+  full_name :string
+  login: string
+}
+
 export type IPointUpdate = Omit<IPoint, 'id' | 'created_at'>
 export type IPointCreate = Omit<IPointUpdate, 'status'>

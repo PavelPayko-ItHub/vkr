@@ -12,15 +12,13 @@ exports.login = async (req, res) => {
   if (isUserExist) {
     try {
       const passHash = user.rows?.[0].password
-      console.log({ rows: user.rows, password, passHash })
 
       const validPass = await bcrypt.compare(password, passHash)
-      if (!validPass) return res.status(401).json({ error: 'invalid pass' })
+      if (!validPass) return res.status(401).json({ error: 'Логин или пароль введен неверно' })
 
       let payload = { id: user.rows[0].id, role: user.rows[0].role }
       const token = jwt.sign(payload, config.TOKEN_SECRET)
 
-      // res.status(200).header("auth-token", token).send({ "token": token })
       res.status(200).header("auth-token", token).json({ token, user: user.rows[0] })
 
     } catch (err) {

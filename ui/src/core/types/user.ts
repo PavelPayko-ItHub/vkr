@@ -2,7 +2,7 @@ export interface IUser {
   id: string
   login: string
   password: string
-  fullname: string
+  full_name: string
   phone: string
   email: string
   role: IUserRole
@@ -11,4 +11,5 @@ export interface IUser {
 
 type IUserRole = 'user' | 'admin' 
 
-export type IUserCreate = Omit<IUser, 'id' | 'role' | 'created_at'>
+export type IUserUpdate = Omit<IUser, 'role' | 'created_at'>
+export type IUserCreate = Omit<IUserUpdate, 'id'>

@@ -19,7 +19,7 @@ export const RegistrationComponent: FC = () => {
                 navigate('/auth')
             })
             .catch((err: AxiosError<{ error: string }>) => {
-                console.log({ err });
+                console.error({ err });
                 message.error(err?.response?.data?.error)
             })
     }
@@ -61,22 +61,21 @@ export const RegistrationComponent: FC = () => {
                 >
                     <Input />
                 </Form.Item>
-                {/* <Form.Item
-                    name={'phone'}
-                    label={'Телефон'}
-                    rules={[
-                        { required: true, message: 'Введите телефон' },
-                        { pattern: /^8\(\d{3}\)\d{3}-\d{2}-\d{2}$/, message: 'Введите телефон в формате 8(XXX)XXX-XX-XX' },
-                    ]}
-                >
-                    <Input />
-                </Form.Item> */}
                 <Form.Item
                     name={'email'}
                     label={'Почта'}
                     rules={[
                         { required: true, message: 'Введите почту' },
                         { pattern: /^\S+@\S+\.\S+$/, message: 'Некорректный email' }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    name={'phone'}
+                    label={'Телефон'}
+                    rules={[
+                        { pattern: /^8\(\d{3}\)\d{3}-\d{2}-\d{2}$/, message: 'Введите телефон в формате 8(XXX)XXX-XX-XX' },
                     ]}
                 >
                     <Input />

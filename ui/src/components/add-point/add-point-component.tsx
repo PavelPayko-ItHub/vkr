@@ -31,15 +31,12 @@ export const AddPointComponent: FC<IAddPointProps> = ({
             return response
         },
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['userPoints', userId] })
             closeHandler()
         },
     })
 
     const submitHandler = (values: IPointCreate) => {
-        console.log({ values });
-
         pointMutation.mutate({ ...values, user_id: userId })
     }
 
@@ -50,8 +47,6 @@ export const AddPointComponent: FC<IAddPointProps> = ({
     const closeHandler = () => {
         setIsOpen(false)
     }
-
-    console.log({ pointMutation });
 
     const typeOptions: SelectProps['options'] = [
         { value: 'point', label: 'Цель' },
@@ -91,10 +86,6 @@ export const AddPointComponent: FC<IAddPointProps> = ({
                 <Form.Item
                     name={'deadline'}
                     label={'Время выполнения'}
-                    rules={[
-                        // { required: true, message: 'Введите пароль' },
-                        // { min: 8, message: 'Не менее 8 символов' }
-                    ]}
                     required
                 >
                     <DatePicker format={'YYYY-MM-DD'} />
@@ -117,10 +108,3 @@ export const AddPointComponent: FC<IAddPointProps> = ({
         </Modal>
     </>
 }
-
-// 1 - выполненый поинт -<CheckCircleOutlined />
-// 2- запланированный поинт
-// 3 - в процессе - <ClockCircleOutlined />
-
-// 4 - полученное достижение - <RiseOutlined />
-// 5- планируемое достижение
