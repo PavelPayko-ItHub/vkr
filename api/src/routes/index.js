@@ -3,7 +3,8 @@ const router = express.Router()
 const userController = require('../controllers/userController')
 const authController = require('../controllers/authController')
 const pointsController = require('../controllers/pointsController')
-const { verifyUserToken, isUser, isAdmin } = require('../middleware/auth')
+
+const { verifyUserToken, isUser, isAdmin } = require('../services/authService')
 
 router.get('/auth_me', verifyUserToken, authController.auth_me)
 
@@ -22,8 +23,8 @@ router.get('/points', verifyUserToken, pointsController.getPoints)
 router.post('/points', verifyUserToken, pointsController.createPoint)
 router.put('/points/:pointId', verifyUserToken, pointsController.updatePoint)
 
-router.post('/points/:pointId/feedback', verifyUserToken, pointsController.createFeedback)
-router.get('/points/:pointId/feedback', verifyUserToken, pointsController.getFeedback)
-router.put('/points/:pointId/status', verifyUserToken, isAdmin, pointsController.updateStatus)
+// router.post('/points/:pointId/feedback', verifyUserToken, pointsController.createFeedback)
+// router.get('/points/:pointId/feedback', verifyUserToken, pointsController.getFeedback)
+// router.put('/points/:pointId/status', verifyUserToken, isAdmin, pointsController.updateStatus)
 
 module.exports = router

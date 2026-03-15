@@ -1,13 +1,14 @@
-const pool = require('../config/db')
+const { getAllPoints, createPoint, getUserPoints, updatePoint } = require("../services/pointService")
 
-exports.getPoints = async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM points')
-    res.status(200).json(result.rows)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-}
+// exports.getPoints = async (req, res) => {
+//   try {
+//     const result = await getAllPoints()
+
+//     res.status(200).json(result.rows)
+//   } catch (err) {
+//     res.status(500).json({ error: err.message })
+//   }
+// }
 
 exports.createPoint = async (req, res) => {
   const { id } = req.user
@@ -16,12 +17,8 @@ exports.createPoint = async (req, res) => {
   const type = req.body.type || ''
   const deadline = req.body.deadline || ''
   try {
-    const result = await pool.query(`INSERT INTO points (user_id, type, description, deadline)
-                VALUES ($1,$2,$3,$4)
-                RETURNING id, user_id, type, description, status,
-                          deadline::text, created_at::text
-            `,
-      [user_id, type, description, deadline])
+    const result = createPoint({ user_id, description, type, deadline })
+
     res.status(201).json(result.rows[0])
 
   }
@@ -34,26 +31,11 @@ exports.createPoint = async (req, res) => {
 exports.getPoints = async (req, res) => {
   const { id: user_id, role } = req.user
 
+
   try {
-    if (role === 'admin') {
-      const result = await pool.query(`
-        SELECT points.id, points.user_id, u.login, u.full_name, points.type, points.description, points.status,
-                points.created_at::text
-        FROM points
-        JOIN users u ON u.id = points.user_id
-        WHERE u.login != 'admin'
-        ORDER BY points.created_at DESC`
-      )
-      res.status(200).json(result.rows)
-    } else {
-      const result = await pool.query(`
-        SELECT id, user_id, type, description, status, created_at::text
-        FROM points
-        WHERE user_id=$1
-        ORDER BY created_at DESC`,
-        [user_id])
-      res.status(200).json(result.rows)
-    }
+    const result = await getAllPoints({ user_id, role })
+
+    res.status(200).json(result.rows)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -63,14 +45,9 @@ exports.getUserPoints = async (req, res) => {
   const { userId: user_id } = req.params
 
   try {
-    const result = await pool.query(`
-        SELECT id, user_id, type, description, status, deadline, created_at::text
-        FROM points
-        WHERE user_id=$1
-        ORDER BY deadline ASC`,
-      [user_id])
-    res.status(200).json(result.rows)
+    const result = await getUserPoints({ user_id })
 
+    res.status(200).json(result.rows)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -84,14 +61,9 @@ exports.updatePoint = async (req, res) => {
   const status = req.body.status || ''
 
   try {
-    const result = await pool.query(`
-        UPDATE points 
-        SET description=$2, type=$3, deadline=$4, status=$5
-        WHERE id=$1
-      `,
-      [pointId, description, type, deadline, status])
-    res.status(201).json(result.rows[0])
+    const result = await updatePoint({ pointId, description, type, deadline, status })
 
+    res.status(201).json(result.rows[0])
   }
   catch (err) {
     res.status(500).json({ error: err.message })

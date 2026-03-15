@@ -2,6 +2,7 @@ import { type FC } from 'react'
 
 import {
     Button,
+    message,
     Popconfirm
 } from 'antd'
 
@@ -21,6 +22,7 @@ export const DeleteUserComponent: FC<IDeleteUserProps> = ({
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] })
+            message.success('Пользователь успешно удален')
         },
     })
 

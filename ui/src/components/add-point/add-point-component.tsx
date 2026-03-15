@@ -5,6 +5,7 @@ import {
     DatePicker,
     Form,
     Input,
+    message,
     Modal,
     Select,
     Typography,
@@ -32,6 +33,7 @@ export const AddPointComponent: FC<IAddPointProps> = ({
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userPoints', userId] })
+            message.success('Точка успешно добавлена')
             closeHandler()
         },
     })

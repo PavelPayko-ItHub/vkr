@@ -10,6 +10,7 @@ import {
     Flex,
     Form,
     Input,
+    message,
     Modal,
     Select,
     Typography,
@@ -38,6 +39,7 @@ export const Point: FC<IPointProps> = ({
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userPoints', data.user_id] })
+            message.success('Точка успешно изменена')
             closeHandler()
         },
     })

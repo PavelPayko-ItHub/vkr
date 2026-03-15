@@ -4,6 +4,7 @@ import {
     Button,
     Form,
     Input,
+    message,
     Modal,
     Typography
 } from 'antd'
@@ -25,8 +26,8 @@ export const AddUserComponent: FC<IMainProps> = () => {
             return response
         },
         onSuccess: () => {
-            // Invalidate and refetch
             queryClient.invalidateQueries({ queryKey: ['users'] })
+            message.success('Пользователь успешно создан')
             closeHandler()
         },
     })
@@ -51,11 +52,13 @@ export const AddUserComponent: FC<IMainProps> = () => {
             open={isOpen}
             onCancel={closeHandler}
             okButtonProps={{ htmlType: 'submit', form: 'create-user', loading: userMutation.isPending }}
+            destroyOnHidden
         >
             <Form<IUserCreate>
                 name='create-user'
                 onFinish={submitHandler}
                 layout='vertical'
+                clearOnDestroy
             >
                 <Form.Item
                     name={'login'}

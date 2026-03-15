@@ -4,6 +4,7 @@ import {
     Button,
     Form,
     Input,
+    message,
     Modal,
     Select,
     Typography,
@@ -30,6 +31,7 @@ export const UpdateUserComponent: FC<IUpdateUserProps> = ({
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] })
+            message.success('Пользователь успешно изменен')
             closeHandler()
         },
     })
