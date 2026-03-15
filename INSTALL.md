@@ -1,14 +1,44 @@
-#Install
-npm create vite@latest react_app -- --template react
-OR
-npm create vite@latest
+# Установка окружения
 
-npm i vite-tsconfig-paths react-router axios antd 
+## Backend
+  - Убедиться  в наличии актуальной версии NodeJS. При необходимости произвести установку по инструкции с сайта https://nodejs.org
+  - перейти в папку /api
+  - установить зависимости 
+    ```
+    npm run install
+    ```
 
-если понадобятся иконки
-npm install @ant-design/icons@6.x --save
+## DB
+  - Убедиться  в наличии актуальной версии PosgreSQL. При необходимости произвести установку по инструкции с сайта https://www.postgresql.org/
+  - создать базу данных `growdb`, пользователя `grow_app` и пароль `grow_pass`. 
+  - перейти в папку /api
+  - выполнить скрипт для инициализации БД
+    ```
+    npm run init
+    ```
 
-#pg
-psql --U postgres -W postgres
-CREATE USER demo_ppa WITH PASSWORD 'demo_ppa'
+## Frontend
+  - Убедиться  в наличии актуальной версии NodeJS. При необходимости произвести установку по инструкции с сайта https://nodejs.org
+  - перейти в папку /ui
+  - установить зависимости 
+    ```
+    npm run install
+    ```
 
+# Запуск приложения
+
+## Backend
+  - перейти в папку /api
+  - запустить сервер 
+    ```
+    npm run serve
+    ```
+  - при первом запуске создать администратора системы обращаясь в api любым удобным способом, например через браузер по адресу http://localhost:3000/api/createAdmin
+
+## Frontend
+  - перейти в папку /ui
+  - запустить приложение
+    ```
+    npm run dev
+    ```
+  - интерфейс доступен по адресу http://localhost:5173/

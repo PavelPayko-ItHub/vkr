@@ -18,7 +18,7 @@ exports.createAdmin = async (req, res) => {
   const email = 'admin'
   const role = 'admin'
   try {
-    const isUserExist = checkIsUserExist({ login })
+    const isUserExist = await checkIsUserExist({ login })
 
     if (isUserExist) {
       res.status(409).json({ error: 'Администратор уже существует' })
@@ -41,7 +41,7 @@ exports.createUser = async (req, res) => {
   const email = req.body.email || ''
   const role = req.body.role || 'user'
   try {
-    const isUserExist = checkIsUserExist({ login })
+    const isUserExist = await checkIsUserExist({ login })
 
     if (isUserExist) {
       res.status(409).json({ error: 'Пользователь уже существует' })
