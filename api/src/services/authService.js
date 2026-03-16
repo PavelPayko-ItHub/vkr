@@ -1,39 +1,16 @@
+const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
-const config = require("../config/config")
+require('dotenv').config()
 
-exports.verifyUserToken = (req, res, next) => {
-  let token = req.headers.authorization
-  if (!token) return res.status(401).send("Access Denied / Unauthorized request")
+exports.getToken = async (params) => {
+  const { userId, userRole, userPassHash, password } = params
 
-  try {
-    token = token.split(' ')[1] // Remove Bearer from string
+  const validPass = await bcrypt.compare(password, userPassHash)
 
-    if (token === 'null' || !token) return res.status(401).send('Unauthorized request')
+  if (!validPass) return null
 
-    let verifiedUser = jwt.verify(token, config.TOKEN_SECRET)
-    if (!verifiedUser) return res.status(401).send('Unauthorized request')
+  let payload = { id: userId, role: userRole }
+  const token = jwt.sign(payload, process.env.TOKEN_SECRET)
 
-    req.user = verifiedUser
-    next()
-
-  } catch (error) {
-    res.status(400).send("Invalid Token")
-  }
-}
-
-exports.isUser = async (req, res, next) => {
-  if (req.user.role === 'user') {
-    next()
-  } else {
-    return res.status(403).send(`Forbidden for ${req.user.role}!`)
-  }
-}
-
-exports.isAdmin = async (req, res, next) => {
-  if (req.user.role === 'admin') {
-    next()
-  } else {
-    // return res.status(403).send("Unauthorized!")
-    return res.status(403).json({ error: "Unauthorized" })
-  }
+  return token
 }
