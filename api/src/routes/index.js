@@ -6,10 +6,10 @@ const pointsController = require('../controllers/pointsController')
 
 const { verifyUserToken, isAdmin } = require('../middleware/auth')
 
-router.get('/auth_me', verifyUserToken, authController.auth_me)
-
-router.post('/login', authController.login)
 router.get('/createAdmin', userController.createAdmin)
+
+router.get('/auth_me', verifyUserToken, authController.auth_me)
+router.post('/login', authController.login)
 
 router.get('/users', verifyUserToken, userController.getUsers)
 router.post('/users', userController.createUser)
