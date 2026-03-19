@@ -18,6 +18,7 @@ import { instanceAxios } from 'core/api/axios'
 import type { AxiosError } from 'axios'
 import { PlusOutlined } from '@ant-design/icons'
 import type { IPointCreate } from 'core/types/points'
+import dayjs from 'dayjs'
 
 
 export const AddPointComponent: FC<IAddPointProps> = ({
@@ -28,7 +29,8 @@ export const AddPointComponent: FC<IAddPointProps> = ({
 
     const pointMutation = useMutation({
         mutationFn: async (pointData: IPointCreate) => {
-            const response = await instanceAxios.post('/api/points', pointData)
+            const payload = { ...pointData, deadline: dayjs(pointData.deadline).set('hours', 12) }
+            const response = await instanceAxios.post('/api/points', payload)
             return response
         },
         onSuccess: () => {
@@ -68,11 +70,13 @@ export const AddPointComponent: FC<IAddPointProps> = ({
             open={isOpen}
             onCancel={closeHandler}
             okButtonProps={{ htmlType: 'submit', form: 'create-point', loading: pointMutation.isPending }}
+            destroyOnHidden
         >
             <Form<IPointCreate>
                 name='create-point'
                 onFinish={submitHandler}
                 layout='vertical'
+                clearOnDestroy
             >
                 <Form.Item
                     name={'type'}

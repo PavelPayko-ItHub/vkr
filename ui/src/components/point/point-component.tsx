@@ -34,7 +34,8 @@ export const Point: FC<IPointProps> = ({
     const queryClient = useQueryClient()
     const pointMutation = useMutation({
         mutationFn: async (pointData: IPointUpdate) => {
-            const response = await instanceAxios.put(`/api/points/${data.id}`, pointData)
+            const payload = { ...pointData, deadline: dayjs(pointData.deadline).set('hours', 12) }
+            const response = await instanceAxios.put(`/api/points/${data.id}`, payload)
             return response
         },
         onSuccess: () => {
@@ -109,6 +110,9 @@ export const Point: FC<IPointProps> = ({
                     name={'deadline'}
                     label={'Время выполнения'}
                     required
+                    rules={[
+                        { required: true, message: 'Выберите дату' }
+                    ]}
                     getValueProps={(value) => ({ value: value ? dayjs(value) : "", })}
                 >
                     <DatePicker />

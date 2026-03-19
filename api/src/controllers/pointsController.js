@@ -17,7 +17,7 @@ exports.createPoint = async (req, res) => {
   const type = req.body.type || ''
   const deadline = req.body.deadline || ''
   try {
-    const result = createPoint({ user_id, description, type, deadline })
+    const result = await createPoint({ user_id, description, type, deadline })
 
     res.status(201).json(result.rows[0])
 
