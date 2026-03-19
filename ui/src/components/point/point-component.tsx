@@ -26,7 +26,7 @@ import type { IPointUpdate } from 'core/types/points'
 import type { AxiosError } from 'axios'
 import dayjs from 'dayjs'
 
-export const Point: FC<IPointProps> = ({
+export const PointComponent: FC<IPointProps> = ({
     data
 }) => {
     const [isOpen, setIsOpen] = useState(false)

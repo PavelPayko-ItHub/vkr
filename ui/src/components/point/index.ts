@@ -1,1 +1,1 @@
-export { PointsComponent as Points } from './point-component'
+export { PointComponent as Point } from './point-component'

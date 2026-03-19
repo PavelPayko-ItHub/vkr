@@ -1,5 +1,5 @@
-import type { AxiosError, AxiosResponse } from 'axios'
-import { type IMeInfo } from 'core/user/user-types'
+import type { AxiosError } from 'axios'
+import type { IUser } from 'core/types/user'
 
 export type TValue = string | number
 
@@ -8,11 +8,11 @@ export interface ITab {
     value: TValue
 }
 
-export interface ILoginData extends IMeInfo {
+export interface ILoginData extends IUser {
     token: string
 }
 
-export interface IRegistrationData extends IMeInfo {
+export interface IRegistrationData extends IUser {
     email: string
     accessToken?: string
 }

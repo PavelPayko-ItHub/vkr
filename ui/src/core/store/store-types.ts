@@ -5,10 +5,9 @@ import {
     type UnknownAction
 } from '@reduxjs/toolkit'
 
-import { type IUserState } from '../user/user-types'
 
 export interface IRootState {
-    user?: IUserState
+    user?: {name: string}
 }
 export type TAppDispatch = ThunkDispatch<IRootState, undefined, UnknownAction>
 export type TAppThunk<ReturnType = void> = ThunkAction<ReturnType, IRootState, unknown, Action<string>>

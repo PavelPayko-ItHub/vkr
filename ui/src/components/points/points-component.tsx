@@ -14,7 +14,7 @@ import { type IPointsProps } from './points-types'
 import { useQuery } from '@tanstack/react-query'
 import { AddPoint } from 'components/add-point'
 import type { IPoint } from 'core/types/points'
-import { Point } from 'components/point/point-component'
+import { Point } from 'components/point'
 import { fetchUsersPoints } from 'core/api/points-api'
 
 
